@@ -33,6 +33,10 @@ public class PostController {
             UserInfo userInfo = (UserInfo) session.getAttribute(SessionInfo.SESSION_NAME);
             log.info("userInfo = {}", userInfo);
             model.addAttribute("name", userInfo.getName());
+            Post post = new Post();
+            model.addAttribute("post", post);
+
+            return "post/postAdd";
         }
 
 //        Cookie[] cookies = req.getCookies();
@@ -44,10 +48,7 @@ public class PostController {
 //                }
 //            }
 //        }
-        Post post = new Post();
-        model.addAttribute("post", post);
-
-        return "post/postAdd";
+        return "redirect:/post/all";
     }
 
     @PostMapping("/post/new")
@@ -57,6 +58,7 @@ public class PostController {
         if(session != null) {
             UserInfo userInfo = (UserInfo) session.getAttribute(SessionInfo.SESSION_NAME);
             post.setUserId(userService.getUserInfoById(userInfo.getId()).getUserId());
+            postService.addPost(post);
         }
 //        Cookie[] cookies = req.getCookies();
 //        if (cookies != null) {
@@ -66,7 +68,7 @@ public class PostController {
 //                }
 //            }
 //        }
-        postService.addPost(post);
+
         return "redirect:/post/all";
     }
 
